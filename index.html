@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-LIGHT - Système d'Éclairage Intelligent Prédictif</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.min.css">
+    <style>
+        :root {
+            --primary-blue: #0a1931;
+            --secondary-blue: #1e3a5f;
+            --accent-blue: #2d5a9a;
+            --light-blue: #e9f2ff;
+            --accent-yellow: #ffd32a;
+            --light-yellow: #fff9e6;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --medium-gray: #eef2f7;
+            --dark-gray: #2d3436;
+            
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--dark-gray);
+            /* Dégradé bleu subtil */
+            background: linear-gradient(135deg, #f0f7ff 0%, #e3eeff 25%, #d6e5ff 50%, #e3eeff 75%, #f0f7ff 100%);
+            background-attachment: fixed;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header et Navigation */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(229, 233, 7, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            color: var(--accent-yellow);
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-yellow);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-yellow);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Sections générales */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-yellow);
+        }
+        
+        .section-subtitle {
+            color: var(--dark-gray);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        /* Section Hero */
+        .hero {
+            background: linear-gradient(rgba(10, 25, 49, 0.85), rgba(10, 25, 49, 0.9)), url('lum3.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+        }
+        
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-yellow);
+            color: var(--dark-gray);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 211, 42, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        /* NOUVELLE Section Présentation du Projet */
+        .presentation-section {
+            /* Dégradé bleu pour cette section */
+            background: linear-gradient(135deg, #edf50d 0%, #f5f9ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .presentation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .presentation-text {
+            text-align: left;
+        }
+        
+        .presentation-text h3 {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .presentation-text p {
+            margin-bottom: 20px;
+            font-size: 17px;
+        }
+        
+        .vision-list {
+            list-style: none;
+            margin-top: 25px;
+        }
+        
+        .vision-list li {
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .vision-list li i {
+            position: absolute;
+            left: 0;
+            top: 3px;
+            color: var(--accent-yellow);
+            background-color: var(--light-yellow);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .presentation-image {
+            text-align: center;
+        }
+        
+        .presentation-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--light-blue);
+        }
+        
+        /* Section Problématique */
+        .problematique {
+            /* Dégradé bleu inversé */
+            background: linear-gradient(135deg, #d2ef51 0%, #ffffff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .problematique-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .problematique-text {
+            flex: 1;
+        }
+        
+        .problematique-text h3 {
+            font-size: 28px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+        
+        .problematique-text p {
+            margin-bottom: 20px;
+            font-size: 17px;
+        }
+        
+        .problematique-list {
+            list-style-position: inside;
+            margin-bottom: 30px;
+        }
+        
+        .problematique-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .problematique-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .problematique-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Section Simulation Narrative */
+        .simulation-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(10, 25, 49, 0.1);
+            margin-top: 30px;
+        }
+        
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .simulation-header h3 {
+            color: var(--primary-blue);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .simulation-scenario {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .scenario-visual {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(to bottom, #f0f7ff 0%, #c2d9ff 100%);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .corridor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #f0f7ff 0%, #c2d9ff 100%);
+        }
+        
+        .corridor.night {
+            background: linear-gradient(to bottom, #1a2b4a 0%, #0a1931 100%);
+        }
+        
+        .wall {
+            position: absolute;
+            background-color: #d1e3ff;
+            height: 100%;
+            width: 20px;
+            top: 0;
+        }
+        
+        .wall.left {
+            left: 30%;
+        }
+        
+        .wall.right {
+            right: 30%;
+        }
+        
+        .corridor.night .wall {
+            background-color: #2d3f5f;
+        }
+        
+        .floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #3a506b;
+        }
+        
+        .person {
+            position: absolute;
+            bottom: 40px;
+            left: -100px;
+            width: 60px;
+            height: 100px;
+            background-color: #4a6fa5;
+            border-radius: 5px;
+            transition: left 3s ease-in-out;
+            z-index: 10;
+        }
+        
+        .person.arrived {
+            left: calc(50% - 30px);
+        }
+        
+        .light-fixture {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 30px;
+            background-color: #ddd;
+            border-radius: 5px;
+            z-index: 5;
+        }
+        
+        .light-beam {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 211, 42, 0.9) 0%, rgba(255, 211, 42, 0.2) 70%, transparent 100%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: height 0.5s, opacity 0.5s;
+        }
+        
+        .light-beam.on {
+            height: 250px;
+            opacity: 1;
+        }
+        
+        .scenario-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .scenario-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--accent-blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(29, 58, 95, 0.2);
+        }
+        
+        .scenario-btn:hover {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(29, 58, 95, 0.3);
+        }
+        
+        .scenario-btn.primary {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #ffc107 100%);
+            color: var(--dark-gray);
+        }
+        
+        .scenario-btn.primary:hover {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
+        }
+        
+        .scenario-status {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .status-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .status-card.active {
+            background: linear-gradient(135deg, var(--light-yellow) 0%, #fff5e6 100%);
+            border-left: 4px solid var(--accent-yellow);
+            box-shadow: 0 5px 15px rgba(255, 211, 42, 0.1);
+        }
+        
+        .status-title {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .status-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .status-value.on {
+            color: #27ae60;
+        }
+        
+        .status-value.off {
+            color: #e74c3c;
+        }
+        
+        .simulation-explanation {
+            background: linear-gradient(135deg, #e3eeff 0%, #f0f7ff 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .simulation-explanation h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .simulation-explanation ol {
+            padding-left: 20px;
+        }
+        
+        .simulation-explanation li {
+            margin-bottom: 10px;
+        }
+        
+        /* Section Application Mobile */
+        .app-section {
+            /* Dégradé bleu */
+            background: linear-gradient(135deg, #e3eeff 0%, #d6e5ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .app-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .app-feature {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .app-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-feature-icon {
+            font-size: 32px;
+            color: var(--accent-yellow);
+            margin-bottom: 15px;
+        }
+        
+        .app-feature h4 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .app-preview {
+            text-align: center;
+        }
+        
+        .app-preview-img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Section Capteurs */
+        .capteurs-section {
+            /* Dégradé bleu clair */
+            background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .capteurs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .capteur-card {
+            background: linear-gradient(135deg, #fcfcfd 0%, #eef5ff 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .capteur-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .capteur-img {
+            height: 200px;
+            background: linear-gradient(135deg, #d6e5ff 0%, #c2d9ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            color: var(--primary-blue);
+        }
+        
+        .capteur-content {
+            padding: 25px;
+        }
+        
+        .capteur-content h3 {
+            font-size: 22px;
+            color:#f38508;
+            /*color: var(--primary-blue);*/
+            margin-bottom: 15px;
+        }
+        
+        /* Section Équipe */
+        .team-section {
+            /* Dégradé bleu doux */
+            background: linear-gradient(135deg, #e3eeff 0%, #d6e5ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 50px;
+        }
+        
+        .team-member {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .member-photo {
+            width: 100%;
+            height: 290px;
+            object-fit: cover;
+        }
+        
+        .member-info {
+            padding: 25px;
+        }
+        
+        .member-name {
+            font-size: 22px;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+        
+        .member-role {
+            color: var(--dark-gray);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-btn {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #ffc107 100%);
+            color: var(--dark-gray);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+        }
+        
+        .portfolio-btn:hover {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
+        }
+        
+        /* Section Professeur Carousel */
+        .professor-carousel {
+            /* Dégradé bleu moyen */
+            background: linear-gradient(135deg, #d6e5ff 0%, #c2d9ff 100%);
+            padding: 80px 0;
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .carousel-cell {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #89d9fb 0%, #f8fbff 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .carousel-img {
+            flex: 1;
+            min-height: 700px;
+            background-size: cover;
+            background-position: center;
+        }
+        .carousel-cell2 {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .carousel-img2 {
+            flex: 1;
+            min-height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+        .carousel-content {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .carousel-content h3 {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        
+        .carousel-content .role {
+            color: var(--accent-yellow);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        /* Section Responsables */
+        .responsables-section {
+            /* Dégradé bleu clair */
+            background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .responsables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .responsable-card {
+            background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .responsable-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .responsable-info {
+            padding: 25px;
+        }
+        
+        .responsable-name {
+            font-size: 22px;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+        
+        /* Section Contact */
+        .contact-section {
+            /* Dégradé bleu doux */
+            background: linear-gradient(135deg, #e3eeff 0%, #d6e5ff 100%);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(10, 25, 49, 0.08);
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-top: 30px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-icon {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(10, 25, 49, 0.2);
+        }
+        
+        .contact-details h4 {
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        .contact-form {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1e3ff;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: #f8fbff;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(10, 25, 49, 0.1);
+            background-color: white;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #ffc107 100%);
+            color: var(--dark-gray);
+            padding: 14px 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
+        }
+        
+        .form-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Modal Portfolio AMELIORE */
+        .portfolio-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            max-width: 1000px;
+            margin: 50px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 30px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            z-index: 10;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        /* Animation de la croix - HOVER avec rotation */
+        .close-modal:hover {
+            background: linear-gradient(135deg, #ff4444 0%, #ff6666 100%);
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 68, 68, 0.3);
+        }
+        
+        /* Animation au clic */
+        .close-modal:active {
+            transform: rotate(90deg) scale(0.95);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .modal-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--accent-yellow);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header-info {
+            flex: 1;
+        }
+        
+        .modal-name {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+        
+        .modal-role {
+            font-size: 22px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: var(--accent-yellow);
+        }
+        
+        .modal-contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+        
+        .contact-item i {
+            color: var(--accent-yellow);
+        }
+        
+        .modal-details {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .modal-section {
+            margin-bottom: 30px;
+        }
+        
+        .modal-section h3 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid var(--accent-yellow);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-section h3 i {
+            color: var(--accent-yellow);
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-tag {
+            background: linear-gradient(135deg, #e3eeff 0%, #d6e5ff 100%);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(210, 225, 255, 0.5);
+        }
+        
+        .skill-tag.highlight {
+            background: linear-gradient(135deg, var(--light-yellow) 0%, #fff5e6 100%);
+            color: var(--primary-blue);
+            border: 1px solid rgba(255, 211, 42, 0.3);
+        }
+        
+        .experience-item, .project-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eef5ff;
+        }
+        
+        .experience-item:last-child, .project-item:last-child {
+            border-bottom: none;
+        }
+        
+        .exp-title, .project-title {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+        
+        .exp-company, .project-context {
+            color: var(--dark-gray);
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .exp-date, .project-date {
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        .exp-desc, .project-desc {
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        
+        .interests-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .interest-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 80px;
+        }
+        
+        .interest-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--light-yellow) 0%, #fff5e6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--primary-blue);
+            font-size: 20px;
+            border: 1px solid rgba(255, 211, 42, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 60px 0 30px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .footer-links h3, .footer-contact h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent-yellow);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-yellow);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .modal-details {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 40px;
+            }
+            
+            .presentation-content, .problematique-content {
+                flex-direction: column;
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-features {
+                order: 2;
+            }
+            
+            .app-preview {
+                order: 1;
+            }
+            
+            .carousel-cell {
+                flex-direction: column;
+            }
+            
+            .carousel-img {
+                width: 100%;
+                min-height: 700px;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .presentation-section, .problematique, .app-section, 
+            .capteurs-section, .team-section, .professor-carousel,
+            .responsables-section, .contact-section {
+                margin: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .app-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-card {
+                min-width: 150px;
+            }
+            
+            .presentation-content {
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+            
+            .scenario-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .scenario-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .modal-header, .modal-details {
+                padding: 25px;
+            }
+            
+            .modal-name {
+                font-size: 28px;
+            }
+            
+            .contact-form {
+                padding: 25px;
+            }
+            
+            .close-modal {
+                top: 10px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header et Navigation -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="logo-text">AI-LIGHT</div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#presentation">Le Projet</a></li>
+                <li><a href="#problematique">Problématique</a></li>
+                <li><a href="#simulation">Simulation</a></li>
+                <li><a href="#application">Application</a></li>
+                <li><a href="#capteurs">Capteurs</a></li>
+                <li><a href="#equipe">Équipe</a></li>
+                <li><a href="#professeur">Professeur</a></li>
+                <li><a href="#responsables">Responsables</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="hero" id="accueil">
+        <div class="container">
+            <h1>SYSTÈME D'ÉCLAIRAGE INTELLIGENT PRÉDICTIF AI-LIGHT</h1>
+            <p>Une solution innovante d'éclairage domestique nocturne qui allie intelligence des capteurs, prédiction des habitudes et économie d'énergie.</p>
+            <div class="hero-btns">
+                <a href="#simulation" class="btn btn-primary">DÉCOUVRIR LA DÉMO</a>
+                <a href="#contact" class="btn btn-secondary">Nous Contacter</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOUVELLE Section Présentation du Projet -->
+    <section class="presentation-section" id="presentation">
+        <div class="container">
+            <div class="section-title">
+                <h2>Le Projet AI-LIGHT</h2>
+            </div>
+            <div class="presentation-content">
+                <div class="presentation-text">
+                    <h3>Révolutionner l'éclairage domestique grâce à l'intelligence artificielle</h3>
+                    <p>AI-LIGHT est un système d'éclairage intelligent prédictif conçu pour automatiser et optimiser l'éclairage domestique nocturne. Notre projet combine plusieurs technologies pour créer une solution adaptative, économique et écologique.</p>
+                    
+                    <p>Le système analyse en permanence les conditions environnementales grâce à des capteurs multiples et s'adapte aux habitudes des utilisateurs pour anticiper leurs besoins en éclairage, réduisant ainsi considérablement la consommation énergétique.</p>
+                    
+                    <h4 style="margin-top: 25px; color: var(--primary-blue);">Notre Vision</h4>
+                    <ul class="vision-list">
+                        <li><i class="fas fa-bolt"></i> <strong>Économie d'énergie maximale :</strong> Réduire de 60 à 80% la consommation électrique liée à l'éclairage nocturne.</li>
+                        <li><i class="fas fa-user-check"></i> <strong>Confort intelligent :</strong> Un éclairage qui s'adapte automatiquement aux besoins réels des utilisateurs.</li>
+                        <li><i class="fas fa-brain"></i> <strong>Apprentissage continu :</strong> Le système apprend des habitudes des utilisateurs pour optimiser son fonctionnement.</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Sécurité renforcée :</strong> Simulation de présence pendant les absences pour dissuader les intrusions.</li>
+                        <li><i class="fas fa-leaf"></i> <strong>Impact écologique :</strong> Contribuer à la réduction de l'empreinte carbone des foyers.</li>
+                    </ul>
+                </div>
+                <div class="presentation-image">
+                    <!--<img src="" alt="Système AI-LIGHT en fonctionnement">-->
+                     <div class="carousel" data-flickity='{ "autoPlay": 4000, "wrapAround": true }'>
+                <!-- Slide 1 -->
+                <div class="carousel-cell2">
+                    <div class="carousel-img2" style="background-image: url('luim2.jpg')"></div>
+                    
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="carousel-cell2">
+                    <div class="carousel-img2" style="background-image: url('lum.jpg')"></div>
+                    
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="carousel-cell2">
+                    <div class="carousel-img2" style="background-image: url('lum3.jpg') "></div>
+                   
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Problématique -->
+    <section class="problematique" id="problematique">
+        <div class="container">
+            <div class="section-title">
+                <h2>Problématique du Projet</h2>
+            </div>
+            <div class="problematique-content">
+                <div class="problematique-text">
+                    <h3>Les limites des systèmes d'éclairage traditionnels</h3>
+                    <p>Les systèmes d'éclairage conventionnels présentent plusieurs inconvénients majeurs dans un contexte où l'efficacité énergétique et l'adaptabilité sont primordiales.</p>
+                    <ul class="problematique-list">
+                        <li><strong>Gaspillage énergétique important :</strong> Les systèmes traditionnels restent allumés même lorsqu'aucune présence n'est détectée, entraînant une consommation inutile d'électricité.</li>
+                        <li><strong>Manque d'adaptation aux conditions environnementales :</strong> Ils ne tiennent pas compte de la luminosité naturelle disponible, allumant la lumière même en plein jour.</li>
+                        <li><strong>Absence de personnalisation :</strong> Impossible de s'adapter aux habitudes spécifiques des utilisateurs ou de prédire leurs besoins.</li>
+                        <li><strong>Contrôle manuel fastidieux :</strong> Nécessitent une intervention constante de l'utilisateur pour l'allumage et l'extinction.</li>
+                    </ul>
+                    <p>Notre système AI-LIGHT répond à ces problématiques en intégrant des capteurs intelligents et des algorithmes prédictifs pour un éclairage autonome, économique et adaptatif.</p>
+                </div>
+                <div class="problematique-image">
+                   
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Problèmes d'éclairage traditionnel">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Simulation Narrative -->
+    <section id="simulation">
+        <div class="container">
+            <div class="section-title">
+                <h2>Démonstration du Système</h2>
+            </div>
+            <p class="section-subtitle">Découvrez le fonctionnement intelligent de AI-LIGHT à travers ce scénario narratif qui illustre ses trois modes de déclenchement.</p>
+            
+            <div class="simulation-container">
+                <div class="simulation-header">
+                    <h3>Scénario : Retour à domicile</h3>
+                    <p>Visualisez comment le système réagit dans différentes situations</p>
+                </div>
+                
+                <div class="simulation-scenario">
+                    <div class="scenario-visual">
+                        <div class="corridor" id="corridorScene">
+                            <div class="wall left"></div>
+                            <div class="wall right"></div>
+                            <div class="floor"></div>
+                            <div class="light-fixture"></div>
+                            <div class="light-beam" id="lightBeam"></div>
+                            <div class="person" id="person"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="scenario-controls">
+                        <button class="scenario-btn primary" id="narrativeDemo">Lancer la démo narrative</button>
+                        <button class="scenario-btn" id="step1Btn">Étape 1: Arrivée en journée</button>
+                        <button class="scenario-btn" id="step2Btn">Étape 2: Arrivée de nuit</button>
+                        <button class="scenario-btn" id="step3Btn">Étape 3: Programmation horaire</button>
+                        <button class="scenario-btn" id="resetSceneBtn">Réinitialiser</button>
+                    </div>
+                    
+                    <div class="scenario-status">
+                        <div class="status-card" id="ldrCard">
+                            <div class="status-title">CAPTEUR LUMINOSITÉ (LDR)</div>
+                            <div class="status-value" id="ldrValue">JOUR</div>
+                        </div>
+                        <div class="status-card" id="ultrasonicCard">
+                            <div class="status-title">CAPTEUR DE PRÉSENCE</div>
+                            <div class="status-value off" id="ultrasonicValue">INACTIF</div>
+                        </div>
+                        <div class="status-card" id="rtcCard">
+                            <div class="status-title">HORLOGE (RTC)</div>
+                            <div class="status-value" id="rtcValue">20:15</div>
+                        </div>
+                        <div class="status-card" id="lightCard">
+                            <div class="status-title">ÉTAT LUMIÈRE</div>
+                            <div class="status-value off" id="lightValue">ÉTEINTE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-explanation">
+                    <h4>Explication du scénario</h4>
+                    <ol>
+                        <li><strong>Étape 1 (Jour) :</strong> Une personne arrive. Le capteur LDR détecte qu'il fait jour → La lumière reste éteinte malgré la présence.</li>
+                        <li><strong>Étape 2 (Nuit + Présence) :</strong> La même personne arrive de nuit. Le LDR détecte l'obscurité ET le capteur ultrason détecte la présence → La lumière s'allume automatiquement.</li>
+                        <li><strong>Étape 3 (Nuit + Programmation) :</strong> Aucune présence, mais l'heure programmée (20h30) est atteinte → La lumière s'allume automatiquement pour la sécurité, simulant une présence.</li>
+                    </ol>
+                    <p>Cette démonstration illustre la double condition (nuit + présence) et le mode de programmation horaire du système AI-LIGHT.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Application Mobile -->
+    <section class="app-section" id="application">
+        <div class="container">
+            <div class="section-title">
+                <h2>Application de Contrôle Mobile</h2>
+            </div>
+            <p class="section-subtitle">Contrôlez et visualisez l'état de votre éclairage AI-LIGHT en temps réel depuis votre smartphone avec notre application intuitive.</p>
+            
+            <div class="app-container">
+                <div class="app-features">
+                    <div class="app-feature">
+                        <div class="app-feature-icon"><i class="fas fa-eye"></i></div>
+                        <h4>Visualisation en temps réel</h4>
+                        <p>Observez l'état de chaque lumière (allumée/éteinte) et les données des capteurs depuis n'importe où.</p>
+                    </div>
+                    <div class="app-feature">
+                        <div class="app-feature-icon"><i class="fas fa-sliders-h"></i></div>
+                        <h4>Contrôle manuel à distance</h4>
+                        <p>Allumez ou éteignez vos lumières manuellement via l'interface de l'application.</p>
+                    </div>
+                    <div class="app-feature">
+                        <div class="app-feature-icon"><i class="fas fa-clock"></i></div>
+                        <h4>Programmation horaire</h4>
+                        <p>Planifiez l'allumage et l'extinction selon vos habitudes (réveil, coucher, absence).</p>
+                    </div>
+                    <div class="app-feature">
+                        <div class="app-feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h4>Suivi de consommation</h4>
+                        <p>Visualisez votre consommation d'énergie pour optimiser vos économies.</p>
+                    </div>
+                </div>
+                <div class="app-preview">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Application mobile AI-LIGHT" class="app-preview-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Capteurs -->
+    <section class="capteurs-section" id="capteurs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Capteurs Utilisés</h2>
+            </div>
+            <p class="section-subtitle">Notre système intègre plusieurs capteurs intelligents qui fonctionnent en synergie pour optimiser l'éclairage en fonction des conditions environnementales et des habitudes des utilisateurs.</p>
+            
+            <div class="capteurs-grid">
+                <div class="capteur-card">
+                    <div class="capteur-img">
+                        <i class="fas fa-microchip"><img src="esp32-esp-wroom-32-38-broches.jpg" height="350px" widht="10px"></i>
+                    </div>
+                    <div class="capteur-content">
+                        <h3>ESP32 - Cerveau du Système</h3>
+                        <p>Microcontrôleur principal qui reçoit et traite les données des capteurs, gère la logique d'allumage et assure la communication avec l'application mobile.</p>
+                        <p><strong>Fonction:</strong> Traitement central, connectivité WiFi/Bluetooth</p>
+                    </div>
+                </div>
+                
+                <div class="capteur-card">
+                    <div class="capteur-img">
+                        <i class="fas fa-clock"><img src="rtc.jpg" height="350px" widht="10px"></i>
+                    </div>
+                    <div class="capteur-content">
+                        <h3>Module RTC DS3231</h3>
+                        <p>Horloge temps réel qui conserve l'heure exacte même en cas de coupure de courant. Permet la mémorisation des habitudes d'éclairage.</p>
+                        <p><strong>Fonction:</strong> Gestion du temps, programmation horaire</p>
+                    </div>
+                </div>
+                
+                <div class="capteur-card">
+                    <div class="capteur-img">
+                        <i class="fas fa-wave-square"><img src="ultra son.jpg" height="350px" widht="10px"></i>
+                    </div>
+                    <div class="capteur-content">
+                        <h3>Capteur Ultrason HC-SR04</h3>
+                        <p>Détecte la présence humaine en émettant des ondes à haute fréquence et en mesurant leur temps de retour. Portée de détection ajustable.</p>
+                        <p><strong>Fonction:</strong> Détection de mouvement et de présence</p>
+                    </div>
+                </div>
+                
+                <div class="capteur-card">
+                    <div class="capteur-img">
+                        <i class="fas fa-sun"><img src="ldr.jpg" height="350px" widht="10px"></img></i>
+                    </div>
+                    <div class="capteur-content">
+                        <h3>LDR (Photo-résistance)</h3>
+                        <p>Mesure la luminosité ambiante pour déterminer si c'est le jour ou la nuit. Permet un allumage uniquement lorsque l'obscurité est détectée.</p>
+                        <p><strong>Fonction:</strong> Détection crépusculaire, mesure de luminosité</p>
+                    </div>
+                </div>
+
+                <div class="capteur-card">
+                    <div class="capteur-img">
+                        <i class="fas fa-sun"><img src="relai.jpg" height="350px" widht="10px"></img></i>
+                    </div>
+                    <div class="capteur-content">
+                        <h3>Module Relais</h3>
+                        <p>Assure l'interface entre le système de commande et les dispositifs électriques de puissance, permettant d'activer ou désactiver des équipements en toute sécurité.</p>
+                        <p><strong>Fonction:</strong> Commutation du circuit électrique</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Équipe -->
+    <section class="team-section" id="equipe">
+        <div class="container">
+            <div class="section-title">
+                <h2>Notre Équipe</h2>
+            </div>
+            <p class="section-subtitle">Découvrez les membres talentueux qui ont contribué à la réalisation du projet AI-LIGHT.</p>
+            
+            <div class="team-grid">
+                <!-- Membre 1 -->
+                <div class="team-member">
+                    <img src="achaba.png" alt="ACHABA AWOUDJI Fadela" class="member-photo">
+                    <div class="member-info">
+                        <h3 class="member-name">ACHABA AWOUDJI Fadela</h3>
+                        <p class="member-role">Technicienne en transmission sur fibre optique</p>
+                        <p>Matricule: CM-UDS-25IUT0448</p>
+                        <button class="portfolio-btn" data-member="1">Voir le portfolio</button>
+                    </div>
+                </div>
+                
+                <!-- Membre 2 -->
+                <div class="team-member">
+                    <img src="belvy.png" alt="KENGNI Ange Belleviane" class="member-photo">
+                    <div class="member-info">
+                        <h3 class="member-name">KENGNI Ange Belleviane</h3>
+                        <p class="member-role">Développement d'application web</p>
+                        <p>Matricule: CM-UDS-23IUT0105</p>
+                        <button class="portfolio-btn" data-member="2">Voir le portfolio</button>
+                    </div>
+                </div>
+                
+                <!-- Membre 3 -->
+                <div class="team-member">
+                    <img src="maba.png" alt="MABA Christian Ronaldo" class="member-photo">
+                    <div class="member-info">
+                        <h3 class="member-name">MABA Christian Ronaldo</h3>
+                        <p class="member-role">Electronicien et technicien réseau</p>
+                        <p>Matricule: CM-UDS-23IUT0123</p>
+                        <button class="portfolio-btn" data-member="3">Voir le portfolio</button>
+                    </div>
+                </div>
+                
+                <!-- Membre 4 -->
+                <div class="team-member">
+                    <img src="georges.png" alt="NANDA TAYIOKA Georges" class="member-photo">
+                    <div class="member-info">
+                        <h3 class="member-name">NANDA TAYIOKA Georges</h3>
+                        <p class="member-role">Designer UI/UX, Technicien réseau</p>
+                        <p>Matricule: CM-UDS-23IUT0029</p>
+                        <button class="portfolio-btn" data-member="4">Voir le portfolio</button>
+                    </div>
+                </div>
+                
+                <!-- Membre 5 -->
+                <div class="team-member">
+                    <img src="willy.jpg" alt="TSAFACK GUEPI Willy" class="member-photo">
+                    <div class="member-info">
+                        <h3 class="member-name">TSAFACK GUEPI Willy</h3>
+                        <p class="member-role">Designer UI/UX, Technicien réseau</p>
+                        <p>Matricule: CM-UDS-23IUT0250</p>
+                        <button class="portfolio-btn" data-member="5">Voir le portfolio</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Professeur Carousel -->
+    <section class="professor-carousel" id="professeur">
+        <div class="container">
+            <div class="section-title">
+                <h2>Notre Encadrant</h2>
+            </div>
+            <p class="section-subtitle">Découvrez notre professeur encadrant qui a guidé notre projet avec expertise.</p>
+            
+            <div class="carousel" data-flickity='{ "autoPlay": 4000, "wrapAround": true }'>
+                <!-- Slide 1 -->
+                <div class="carousel-cell">
+                    <div class="carousel-img" style="background-image: url('1.jpg')"></div>
+                    <div class="carousel-content">
+                        <h3>Ing/Exp. Blaise FOTSING NDE</h3>
+                        <p class="role">Enseignant Vacataire Professionnel</p>
+                        <p>Encadrant principal du projet AI-LIGHT à l'IUT-FOTSO VICTOR de l'Université de Dschang, Cameroun.</p>
+                        <p>Spécialiste en systèmes embarqués et télécommunications avec plus de 10 ans d'expérience dans l'enseignement et l'encadrement de projets technologiques.</p>
+                        <p>Expertise dans les domaines de l'électronique, de la programmation de microcontrôleurs et des systèmes intelligents.</p>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="carousel-cell">
+                    <div class="carousel-img" style="background-image: url('3.jpg')"></div>
+                    <div class="carousel-content">
+                        <h3>Expérience Professionnelle</h3>
+                        <p class="role">Ingénieur et Enseignant</p>
+                        <p>Ingénieur en télécommunications avec une solide expérience dans le développement de systèmes embarqués.</p>
+                        <p>Enseignant vacataire à l'IUT-FOTSO VICTOR depuis 2018, où il encadre des projets pratiques en génie des télécommunications et réseaux.</p>
+                        <p>Contribue activement à la formation de futurs ingénieurs en mettant l'accent sur l'innovation et l'application pratique des connaissances théoriques.</p>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="carousel-cell">
+                    <div class="carousel-img" style="background-image: url('2.jpg')"></div>
+                    <div class="carousel-content">
+                        <h3>Encadrement du Projet</h3>
+                        <p class="role">Guide et Mentor</p>
+                        <p>A fourni un encadrement technique exceptionnel tout au long du développement du projet AI-LIGHT.</p>
+                        <p>A aidé l'équipe à surmonter les défis techniques liés à l'intégration des différents capteurs et à la programmation de l'ESP32.</p>
+                        <p>A encouragé l'innovation tout en maintenant une approche pragmatique pour assurer la faisabilité du projet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Responsables -->
+    <section class="responsables-section" id="responsables">
+        <div class="container">
+            <div class="section-title">
+                <h2>Autres Responsables Académiques</h2>
+            </div>
+            <p class="section-subtitle">Les autres responsables académiques et administratifs qui ont contribué à la réussite de notre projet.</p>
+            
+            <div class="responsables-grid">
+                <div class="responsable-card">
+                    <img src="Directeur_IUTFV_ConseilDirection-1024x768.jpeg" alt="Directeur IUT" class="responsable-img">
+                    <div class="responsable-info">
+                        <h3 class="responsable-name">Pr. René TCHINDA</h3>
+                        <p>Directeur de l'IUT-FOTSO VICTOR</p>
+                        <p>Responsable académique de l'institut, a facilité les ressources nécessaires à la réalisation du projet.</p>
+                    </div>
+                </div>
+                
+                <div class="responsable-card">
+                    <img src="IMG-20251223-WA0059.jpg" alt="Chef de Département" class="responsable-img">
+                    <div class="responsable-info">
+                        <h3 class="responsable-name">Pr. KAPCHE TAGNE François</h3>
+                        <p>Chef du Département Génie des Télécommunications</p>
+                        <p>Assure l'alignement avec les objectifs pédagogiques.</p>
+                    </div>
+                </div>
+                
+                <div class="responsable-card">
+                    <img src="IMG-20251223-WA0016.jpg" alt="Responsable de niveau" class="responsable-img">
+                    <div class="responsable-info">
+                        <h3 class="responsable-name">Dr Alex CHIME</h3>
+                        <p>Coordonnateur des Projets</p>
+                        <p>Assure la plannification des cours et le maintien d'un niveau d'apprentissage croissant.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contactez-Nous</h2>
+            </div>
+            <p class="section-subtitle">Intéressé par notre projet AI-LIGHT ? Contactez-nous pour plus d'informations, collaborations ou pour obtenir notre système d'éclairage intelligent.</p>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Adresse</h4>
+                            <p>IUT-FOTSO VICTOR, BP 134, Bandjoun, Cameroun</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Téléphone</h4>
+                            <p>(+237) 672 27 53 59 / 651 57 60 56</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>ailightppp@gmail.com</p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Heures de travail</h4>
+                            <p>Lundi - Vendredi: 8h00 - 17h00</p>
+                            <p>Samedi: 9h00 - 13h00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Adresse email *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Envoyer le message</button>
+                        
+                        <div id="formMessage" class="form-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="footer-title">AI-LIGHT</div>
+                    </div>
+                    <p>Système d'éclairage intelligent prédictif multi-capteurs développé par les étudiants de l'IUT-FOTSO VICTOR de l'Université de Dschang, Cameroun.</p>
+                    <p>Année académique 2025-2026</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Liens Rapides</h3>
+                    <ul>
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#presentation">Le Projet</a></li>
+                        <li><a href="#problematique">Problématique</a></li>
+                        <li><a href="#simulation">Simulation</a></li>
+                        <li><a href="#application">Application</a></li>
+                        <li><a href="#capteurs">Capteurs</a></li>
+                        <li><a href="#equipe">Équipe</a></li>
+                        <li><a href="#professeur">Professeur</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-university"></i> IUT-FOTSO VICTOR, Bandjoun, Cameroun</p>
+                    <p><i class="fas fa-phone"></i> (+237) 672 27 53 59 / 651 57 60 56</p>
+                    <p><i class="fas fa-envelope"></i> ailightppp@gmail.com</p>
+                    <p><i class="fas fa-globe"></i> http://www.univ-dschang.org/itufv/</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025-2026 Projet AI-LIGHT - Groupe 8. Tous droits réservés.</p>
+                <p>Réalisé dans le cadre du Projet Professionnel Personnel, Licence d'Ingénierie des Réseaux et Télécommunications.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Portfolio AMELIORE -->
+    <div class="portfolio-modal" id="portfolioModal">
+        <div class="modal-content">
+            <div class="close-modal" id="closeModal">&times;</div>
+            <div class="modal-body" id="modalBody">
+                <!-- Le contenu sera inséré dynamiquement par JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
+    <script>
+        // Navigation mobile
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // ==================== SIMULATION NARRATIVE ====================
+        const corridorScene = document.getElementById('corridorScene');
+        const lightBeam = document.getElementById('lightBeam');
+        const person = document.getElementById('person');
+        const ldrValue = document.getElementById('ldrValue');
+        const ultrasonicValue = document.getElementById('ultrasonicValue');
+        const rtcValue = document.getElementById('rtcValue');
+        const lightValue = document.getElementById('lightValue');
+        const ldrCard = document.getElementById('ldrCard');
+        const ultrasonicCard = document.getElementById('ultrasonicCard');
+        const rtcCard = document.getElementById('rtcCard');
+        const lightCard = document.getElementById('lightCard');
+
+        let currentScenarioStep = 0;
+        let isDayTime = true;
+        let isPersonPresent = false;
+        let isLightOn = false;
+        let currentTime = "20:15";
+
+        function updateVisualScene() {
+            // Mettre à jour le décor jour/nuit
+            if (isDayTime) {
+                corridorScene.classList.remove('night');
+                corridorScene.classList.add('day');
+                ldrValue.textContent = "JOUR";
+                ldrValue.className = "status-value";
+                ldrCard.classList.remove('active');
+            } else {
+                corridorScene.classList.remove('day');
+                corridorScene.classList.add('night');
+                ldrValue.textContent = "NUIT";
+                ldrValue.className = "status-value on";
+                ldrCard.classList.add('active');
+            }
+
+            // Mettre à jour la personne
+            if (isPersonPresent) {
+                person.classList.add('arrived');
+                ultrasonicValue.textContent = "DÉTECTÉE";
+                ultrasonicValue.className = "status-value on";
+                ultrasonicCard.classList.add('active');
+            } else {
+                person.classList.remove('arrived');
+                ultrasonicValue.textContent = "INACTIF";
+                ultrasonicValue.className = "status-value off";
+                ultrasonicCard.classList.remove('active');
+            }
+
+            // Mettre à jour l'heure
+            rtcValue.textContent = currentTime;
+
+            // Mettre à jour la lumière (allumée si (nuit ET présence) OU (nuit ET heure programmée))
+            const isScheduledTime = (currentTime >= "20:30" && currentTime <= "22:00");
+            if ((!isDayTime && isPersonPresent) || (!isDayTime && isScheduledTime && !isPersonPresent)) {
+                lightBeam.classList.add('on');
+                lightValue.textContent = "ALLUMÉE";
+                lightValue.className = "status-value on";
+                lightCard.classList.add('active');
+                isLightOn = true;
+            } else {
+                lightBeam.classList.remove('on');
+                lightValue.textContent = "ÉTEINTE";
+                lightValue.className = "status-value off";
+                lightCard.classList.remove('active');
+                isLightOn = false;
+            }
+
+            // Mettre à jour la carte RTC si heure programmée
+            if (isScheduledTime) {
+                rtcCard.classList.add('active');
+            } else {
+                rtcCard.classList.remove('active');
+            }
+        }
+
+        function runScenarioStep(step) {
+            currentScenarioStep = step;
+            
+            switch(step) {
+                case 1: // Arrivée en journée
+                    isDayTime = true;
+                    isPersonPresent = true;
+                    currentTime = "14:30";
+                    break;
+                case 2: // Arrivée de nuit
+                    isDayTime = false;
+                    isPersonPresent = true;
+                    currentTime = "20:15";
+                    break;
+                case 3: // Programmation horaire (pas de présence)
+                    isDayTime = false;
+                    isPersonPresent = false;
+                    currentTime = "20:45"; // Heure dans la plage programmée
+                    break;
+                default: // Reset
+                    isDayTime = true;
+                    isPersonPresent = false;
+                    currentTime = "20:15";
+                    currentScenarioStep = 0;
+            }
+            
+            updateVisualScene();
+        }
+
+        function runNarrativeDemo() {
+            runScenarioStep(0); // Reset
+            setTimeout(() => {
+                runScenarioStep(1); // Étape 1 après 1s
+                setTimeout(() => {
+                    runScenarioStep(2); // Étape 2 après 3s
+                    setTimeout(() => {
+                        runScenarioStep(3); // Étape 3 après 3s
+                    }, 3000);
+                }, 3000);
+            }, 1000);
+        }
+
+        // Événements des boutons
+        document.getElementById('narrativeDemo').addEventListener('click', runNarrativeDemo);
+        document.getElementById('step1Btn').addEventListener('click', () => runScenarioStep(1));
+        document.getElementById('step2Btn').addEventListener('click', () => runScenarioStep(2));
+        document.getElementById('step3Btn').addEventListener('click', () => runScenarioStep(3));
+        document.getElementById('resetSceneBtn').addEventListener('click', () => runScenarioStep(0));
+
+        // Initialiser la scène
+        updateVisualScene();
+
+        // ==================== PORTFOLIOS AMELIORES ====================
+        // Données des portfolios enrichies
+        const portfolioData = {
+            1: {
+                name: "ACHABA AWOUDJI Fadela Syrielle",
+                role: "Technicienne en transmission sur fibre optique",
+                matricule: "CM-UDS-25IUT0448",
+                photo: "achaba.png",
+                contact: {
+                    email: "achabaawoudji@icloud.com",
+                    phone: "+237 673 65 24 47 / 680 27 00 11",
+                    location: "Bandjoun, Cameroun"
+                },
+                formation: [
+                    {
+                        degree: "Licence d'Ingénierie des réseaux et télécommunications",
+                        institution: "Université de Dschang - IUT FOTSO VICTOR",
+                        year: "2025-2026 (En cours)"
+                    }
+                ],
+                competences: {
+                    techniques: ["Transmission sur fibre optique", "Réseaux FTTH", "Maintenance réseau", "Systèmes de communication"],
+                    comportementales: ["Rigueur", "Autonomie", "Esprit d'analyse", "Travail en équipe"]
+                },
+                experience: [
+                    {
+                        title: "Stage technique - Maintenance réseaux fibre optique",
+                        company: "CAMTEL Cameroun",
+                        period: "Juillet - Août 2024",
+                        description: "Maintenance préventive et corrective sur le réseau backbone fibre optique."
+                    }
+                ],
+                projets: [
+                    {
+                        title: "AI-LIGHT - Système d'éclairage intelligent prédictif",
+                        context: "Projet Professionnel Personnel - Groupe 8",
+                        date: "2025-2026",
+                        description: "Contribution à la conception de la partie transmission des données entre les capteurs et le module ESP32."
+                    }
+                ],
+                interets: [
+                    {name: "Technologies", icon: "fas fa-microchip"},
+                    {name: "Lecture", icon: "fas fa-book"},
+                    {name: "Randonnée", icon: "fas fa-hiking"}
+                ],
+                secteur: "TÉLÉCOMMUNICATIONS ET RÉSEAUX"
+            },
+            2: {
+                name: "KENGNI Ange Belleviane",
+                role: "Développeuse d'applications",
+                matricule: "CM-UDS-23IUT0105",
+                photo: "belvy.png",
+                contact: {
+                    email: "kengniange9@gmail.com",
+                    phone: "+237 658 90 61 75 / 678 92 76 55",
+                    location: "Bandjoun, Cameroun"
+                },
+                formation: [
+                    {
+                        degree: "Licence d'Ingénierie des réseaux et télécommunications",
+                        institution: "Université de Dschang - IUT FOTSO VICTOR",
+                        year: "2025-2026 (En cours)"
+                    }
+                ],
+                competences: {
+                    techniques: ["Développement Android", "Python", "Bases de données SQL", "UI/UX Design"],
+                    comportementales: ["Créativité", "Persévérance", "Esprit d'équipe", "Curiosité intellectuelle"]
+                },
+                experience: [
+                    {
+                        title: "Développeuse d'applications Android",
+                        company: "Projets universitaires",
+                        period: "2023 - Présent",
+                        description: "Conception et développement d'applications mobiles pour gestion de projets."
+                    }
+                ],
+                projets: [
+                    {
+                        title: "AI-LIGHT - Application mobile de contrôle",
+                        context: "Projet Professionnel Personnel - Groupe 8",
+                        date: "2025-2026",
+                        description: "Développement de l'application mobile de contrôle du système d'éclairage intelligent."
+                    }
+                ],
+                interets: [
+                    {name: "Développement", icon: "fas fa-mobile-alt"},
+                    {name: "Design", icon: "fas fa-palette"},
+                    {name: "Photographie", icon: "fas fa-camera"}
+                ],
+                secteur: "INFORMATIQUE"
+            },
+            3: {
+                name: "MABA Christian Ronaldo",
+                role: "Electronicien et technicien réseau",
+                matricule: "CM-UDS-23IUT0123",
+                photo: "maba.png",
+                contact: {
+                    email: "ronaldomaba406@gmail.com",
+                    phone: "+237 651 57 60 56 / 656 00 91 41",
+                    location: "Bandjoun, Cameroun"
+                },
+                formation: [
+                    {
+                        degree: "Licence d'Ingénierie des réseaux et télécommunications",
+                        institution: "Université de Dschang - IUT FOTSO VICTOR",
+                        year: "2025-2026 (En cours)"
+                    }
+                ],
+                competences: {
+                    techniques: ["Électronique embarquée", "Réseaux informatiques", "Programmation Arduino/ESP32", "Maintenance hardware"],
+                    comportementales: ["Précision", "Patience", "Résolution de problèmes", "Autonomie"]
+                },
+                experience: [
+                    {
+                        title: "Technicien en maintenance électronique",
+                        company: "AOS Cameroun (Stage)",
+                        period: "Avril 2025",
+                        description: "Maintenance et dépannage d'équipements électroniques et de réseau."
+                    }
+                ],
+                projets: [
+                    {
+                        title: "AI-LIGHT - Conception électronique",
+                        context: "Projet Professionnel Personnel - Groupe 8",
+                        date: "2025-2026",
+                        description: "Conception et assemblage du circuit électronique du système d'éclairage intelligent."
+                    }
+                ],
+                interets: [
+                    {name: "Électronique", icon: "fas fa-microchip"},
+                    {name: "Robotique", icon: "fas fa-robot"},
+                    {name: "Sport", icon: "fas fa-futbol"}
+                ],
+                secteur: "ÉLECTRONIQUE ET TÉLÉCOMMUNICATIONS"
+            },
+            4: {
+                name: "NANDA TAYIOKA Georges",
+                role: "Designer UI/UX & Technicien réseau",
+                matricule: "CM-UDS-23IUT0029",
+                photo: "georges.png",
+                contact: {
+                    email: "georgesnanda42@gmail.com",
+                    phone: "+237 672 27 53 59 / 694 76 63 50",
+                    location: "Bandjoun, Cameroun"
+                },
+                formation: [
+                    {
+                        degree: "Licence d'Ingénierie des réseaux et télécommunications",
+                        institution: "Université de Dschang - IUT FOTSO VICTOR",
+                        year: "2025-2026 (En cours)"
+                    }
+                ],
+                competences: {
+                    techniques: ["Design d'interfaces", "Expérience utilisateur", "Réseaux informatiques", "Administration système"],
+                    comportementales: ["Créativité", "Sens de l'esthétique", "Communication", "Adaptabilité"]
+                },
+                experience: [
+                    {
+                        title: "Designer freelance et Technicien reseaux",
+                        company: "AOS Cameroun",
+                        period: "Avril 2025 ",
+                        description: "Conception d'interfaces utilisateur pour diverses applications mobiles."
+                    }
+                ],
+                projets: [
+                    {
+                        title: "AI-LIGHT - Interface application mobile",
+                        context: "Projet Professionnel Personnel - Groupe 8",
+                        date: "2025-2026",
+                        description: "Design de l'interface utilisateur de l'application mobile de contrôle AI-LIGHT."
+                    }
+                ],
+                interets: [
+                    {name: "Design", icon: "fas fa-paint-brush"},
+                    {name: "Art numérique", icon: "fas fa-desktop"},
+                    {name: "Musique", icon: "fas fa-music"}
+                ],
+                secteur: "RÉSEAU INFORMATIQUE ET INFOGRAPHIE"
+            },
+            5: {
+                name: "TSAFACK GUEPI Willy Jefferson",
+                role: "Designer UI/UX & Technicien réseau",
+                matricule: "CM-UDS-23IUT0250",
+                photo: "willy.jpg",
+                contact: {
+                    email: "tsafackwilly01@gmail.com",
+                    phone: "+237 653 84 99 11",
+                    location: "Bandjoun, Cameroun"
+                },
+                formation: [
+                    {
+                        degree: "Licence d'Ingénierie des réseaux et télécommunications",
+                        institution: "Université de Dschang - IUT FOTSO VICTOR",
+                        year: "2025-2026 (En cours)"
+                    }
+                ],
+                competences: {
+                    techniques: ["Design graphique", "Prototypage UI", "Sécurité réseau", "Virtualisation"],
+                    comportementales: ["Innovation", "Précision", "Collaboration", "Gestion du temps"]
+                },
+                experience: [
+                    {
+                        title: "Assistant designer",
+                        company: "AOS Cameroun",
+                        period: "Avril 2025",
+                        description: "Assistance à la conception graphique pour divers projets web et mobiles."
+                    }
+                ],
+                projets: [
+                    {
+                        title: "AI-LIGHT - Design interface et logo",
+                        context: "Projet Professionnel Personnel - Groupe 8",
+                        date: "2025-2026",
+                        description: "Création du logo et design de l'interface globale du projet AI-LIGHT."
+                    }
+                ],
+                interets: [
+                    {name: "Graphisme", icon: "fas fa-palette"},
+                    {name: "Technologie", icon: "fas fa-laptop-code"},
+                    {name: "Voyage", icon: "fas fa-plane"}
+                ],
+                secteur: "RÉSEAU INFORMATIQUE ET INFOGRAPHIE"
+            }
+        };
+
+        // Gestion des modals de portfolio
+        const portfolioModal = document.getElementById('portfolioModal');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        
+        document.querySelectorAll('.portfolio-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const memberId = btn.getAttribute('data-member');
+                const memberData = portfolioData[memberId];
+                
+                // Construction du HTML du portfolio enrichi
+                modalBody.innerHTML = `
+                    <div class="modal-header">
+                        <img src="${memberData.photo}" alt="${memberData.name}" class="modal-photo">
+                        <div class="modal-header-info">
+                            <h2 class="modal-name">${memberData.name}</h2>
+                            <p class="modal-role">${memberData.role}</p>
+                            <p><strong>Matricule:</strong> ${memberData.matricule}</p>
+                            <div class="modal-contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>${memberData.contact.email}</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>${memberData.contact.phone}</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${memberData.contact.location}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-details">
+                        <div class="modal-section">
+                            <h3><i class="fas fa-graduation-cap"></i> Formation</h3>
+                            ${memberData.formation.map(edu => `
+                                <div class="experience-item">
+                                    <div class="exp-title">${edu.degree}</div>
+                                    <div class="exp-company">${edu.institution}</div>
+                                    <div class="exp-date">${edu.year}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3><i class="fas fa-tools"></i> Compétences Techniques</h3>
+                            <div class="skills-list">
+                                ${memberData.competences.techniques.map(skill => `
+                                    <div class="skill-tag highlight">${skill}</div>
+                                `).join('')}
+                            </div>
+                            
+                            <h3 style="margin-top: 25px;"><i class="fas fa-users"></i> Compétences Comportementales</h3>
+                            <div class="skills-list">
+                                ${memberData.competences.comportementales.map(skill => `
+                                    <div class="skill-tag">${skill}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3><i class="fas fa-briefcase"></i> Expérience Professionnelle</h3>
+                            ${memberData.experience.map(exp => `
+                                <div class="experience-item">
+                                    <div class="exp-title">${exp.title}</div>
+                                    <div class="exp-company">${exp.company}</div>
+                                    <div class="exp-date">${exp.period}</div>
+                                    <div class="exp-desc">${exp.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3><i class="fas fa-project-diagram"></i> Projets Réalisés</h3>
+                            ${memberData.projets.map(proj => `
+                                <div class="project-item">
+                                    <div class="project-title">${proj.title}</div>
+                                    <div class="project-context">${proj.context}</div>
+                                    <div class="project-date">${proj.date}</div>
+                                    <div class="project-desc">${proj.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3><i class="fas fa-heart"></i> Centres d'Intérêt</h3>
+                            <div class="interests-list">
+                                ${memberData.interets.map(interest => `
+                                    <div class="interest-item">
+                                        <div class="interest-icon">
+                                            <i class="${interest.icon}"></i>
+                                        </div>
+                                        <div>${interest.name}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3><i class="fas fa-industry"></i> Secteur d'Activité</h3>
+                            <p><strong>${memberData.secteur}</strong></p>
+                        </div>
+                    </div>
+                `;
+                
+                portfolioModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeModal.addEventListener('click', () => {
+            portfolioModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === portfolioModal) {
+                portfolioModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Gestion du formulaire de contact
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('formMessage');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            
+            // Afficher un message de succès
+            formMessage.textContent = `Merci ${name} ! Votre message a été envoyé avec succès. Nous vous contacterons à ${email} sous peu.`;
+            formMessage.className = 'form-message success';
+            formMessage.style.display = 'block';
+            
+            // Réinitialiser le formulaire
+            contactForm.reset();
+            
+            // Masquer le message après 5 secondes
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        });
+
+        // Initialiser le carousel Flickity
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                new Flickity(carousel, {
+                    autoPlay: 4000,
+                    wrapAround: true,
+                    pageDots: true,
+                    prevNextButtons: true
+                });
+            }
+        });
+        
+        // Navigation fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
